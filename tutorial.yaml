@@ -1,0 +1,4 @@
+title: Accelerometer with Cocos2D
+cover: cover.png
+teaser_text: |
+    This tutorial will give you a minimalistic example of how to use the accelerometer to move Nodes in Cocos2D 3.0.
