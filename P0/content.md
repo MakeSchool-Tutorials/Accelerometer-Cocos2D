@@ -99,7 +99,3 @@ You can find the sample project for this tutorial on [Github](https://github.com
 Happy Coding!
 
 benji@makegameswith.us
-
-            <div>
-
-            </div>
