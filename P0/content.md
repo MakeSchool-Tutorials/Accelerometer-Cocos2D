@@ -1,6 +1,7 @@
 ---
 title: Accelerometer with Cocos2D
 slug: accelerometer-cocos2d
+gamernews_id: 371
 ---            
 
 This brief tutorial will give you a minimalistic example of how to use the accelerometer to move nodes in Cococs2d 3.0. We are going to use *CMMotionManager* which replaces the older *UIAccelerometerDelegate.* 
