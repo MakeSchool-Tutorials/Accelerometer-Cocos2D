@@ -12,7 +12,7 @@ Before we start you can either create a new SpriteBuilder project or proceed and
 
 As a first step you need to add the CoreMotion framework to your project:
 
-![](https://static.makegameswith.us/gamernews_images/xLzTda4Omx/Screen Shot 2014-02-20 at 16.11.27.png)
+![](./screenshot.png)
 
 First you need to select your project in the left file browser (1). Then you need to select your app target in the middle pane (2). Next, click the small + button in the *Link Binary With Libraries* section. In the dialog that appears now you need to select *CoreMotion.framework* (3). Now the framework is added to your project.
 
