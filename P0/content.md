@@ -32,7 +32,7 @@ For now we will keep it simple and create one *CMMotionManager* in the scene or 
 
 # Store Screen Size
 
-To help us position the label we're using, and keep it on screen, we'll use the class *CCDirector* to give us some information on the size of the phone screen.  *CCDirector* is a class that handles the main view, presents scenes, and handles all the updates and drawing.  *CCDirector* has a property that describes the height and width of the current device.  We'll store that property for use later.
+To help us position the label we're using, and keep it on screen, we'll use the *CCNode* property *contentSizeInPoints*.  This property contains a struct that stores both the height and width of any *CCNode*.  The MainScene class extends *CCNode* through *CCScene*, so we can access it and store it for later.
 
 Add a private instance variable to your *.m* file, also add a variable for a label which we will be moving using the accelerometer data, and a variable for the screen size:
 
@@ -43,14 +43,13 @@ Add a private instance variable to your *.m* file, also add a variable for a lab
         CGSize _screen;
     }
 
-Instantiate the motion manager, the label, and screen size variable in the *didLoadFromCCB* method of your class:
+Instantiate the motion manager, and the label in the *didLoadFromCCB* method of your class:
 
     - (void)didLoadFromCCB
     {
         _label= [CCLabelTTF labelWithString:@"X" fontName:@"ArialMT" fontSize:48];
         [self addChild:_label];
         _motionManager = [[CMMotionManager alloc] init];
-        _screen = [CCDirector sharedDirector].viewSize;
     }
 
 Next, let's start capturing accelerometer events.
@@ -64,6 +63,7 @@ Add these two methods to your class:
     - (void)onEnter
     {
         [super onEnter];
+        _screen = self.contentSizeInPoints;
         _label.position = ccp(_screen.width/2, _screen.height/2);
         [_motionManager startAccelerometerUpdates];
     }
