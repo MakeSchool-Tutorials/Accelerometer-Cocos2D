@@ -4,15 +4,15 @@ slug: accelerometer-cocos2d
 gamernews_id: 371
 ---            
 
-This brief tutorial will give you a minimalistic example of how to use the accelerometer to move nodes in Cococs2d 3.0. We are going to use *CMMotionManager* which replaces the older *UIAccelerometerDelegate.* 
+This brief tutorial will give you a minimalistic example of how to use the accelerometer to move nodes in Cococs2d 3.4. We are going to use *CMMotionManager* which replaces the older *UIAccelerometerDelegate.* 
 
-Before we start you can either create a new Cocos2d 3.0 project or proceed and add the code to an existing project of yours.
+Before we start you can either create a new SpriteBuilder project or proceed and add the code to an existing project of yours.
 
 # Include the CoreMotion framework
 
 As a first step you need to add the CoreMotion framework to your project:
 
-![](https://static.makegameswith.us/gamernews_images/xLzTda4Omx/Screen Shot 2014-02-20 at 16.11.27.png)
+![](./screenshot.png)
 
 First you need to select your project in the left file browser (1). Then you need to select your app target in the middle pane (2). Next, click the small + button in the *Link Binary With Libraries* section. In the dialog that appears now you need to select *CoreMotion.framework* (3). Now the framework is added to your project.
 
@@ -30,25 +30,26 @@ The *CMMotionManager* is a class that provides access to all motion data that is
 
 For now we will keep it simple and create one *CMMotionManager* in the scene or node we want to use it from.
 
-Add a private instance variable to your *.m* file, also add a variable for a label which we will be moving using the accelerometer data:
+# Store Screen Size
+
+To help us position the label we're using, and keep it on screen, we'll use the *CCNode* property *contentSizeInPoints*.  This property contains a struct that stores both the height and width of any *CCNode*.  The MainScene class extends *CCNode* through *CCScene*, so we can access it and store it for later.
+
+Add a private instance variable to your *.m* file, also add a variable for a label which we will be moving using the accelerometer data, and a variable for the screen size:
 
     @implementation MainScene {
         // important: only create one instance of a motion manager
         CMMotionManager *_motionManager;
         CCLabelTTF *_label;
+        CGSize _screen;
     }
 
-Instantiate the motion manager and the label in the *init* method of your class:
+Instantiate the motion manager, and the label in the *didLoadFromCCB* method of your class:
 
-    - (id)init
+    - (void)didLoadFromCCB
     {
-        if (self = [super init])
-        {
-            _label= [CCLabelTTF labelWithString:@"X" fontName:@"Arial" fontSize:48];
-            [self addChild:_label];
-            _motionManager = [[CMMotionManager alloc] init];
-        }
-        return self;
+        _label= [CCLabelTTF labelWithString:@"X" fontName:@"ArialMT" fontSize:48];
+        [self addChild:_label];
+        _motionManager = [[CMMotionManager alloc] init];
     }
 
 Next, let's start capturing accelerometer events.
@@ -62,7 +63,8 @@ Add these two methods to your class:
     - (void)onEnter
     {
         [super onEnter];
-        _label.position = ccp(self.contentSize.width/2, self.contentSize.height/2);
+        _screen = self.contentSizeInPoints;
+        _label.position = ccp(_screen.width/2, _screen.height/2);
         [_motionManager startAccelerometerUpdates];
     }
     - (void)onExit
@@ -71,7 +73,7 @@ Add these two methods to your class:
         [_motionManager stopAccelerometerUpdates];
     }
 
-We also use the *onEnter* method to center our label on the screen.
+We also use the *onEnter* method to center our label on the screen.  
 
 # Use the accelerometer data
 
@@ -85,7 +87,7 @@ We will access the data in the *update* method of our scene, because this is the
         CMAccelerometerData *accelerometerData = _motionManager.accelerometerData;
         CMAcceleration acceleration = accelerometerData.acceleration;
         CGFloat newXPosition = _label.position.x + acceleration.y * 1000 * delta;
-        newXPosition = clampf(newXPosition, 0, self.contentSize.width);
+        newXPosition = clampf(newXPosition, 0, _screen.width);
         _label.position = CGPointMake(newXPosition, _label.position.y);
     }
 
@@ -99,4 +101,4 @@ You can find the sample project for this tutorial on [Github](https://github.com
 
 Happy Coding!
 
-benji@makegameswith.us
+benji@makeschool.com
